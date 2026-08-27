@@ -38,8 +38,11 @@ import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 
+// TODO break this up into multiple classes/stages?
+// maybe also expose an API to add/suppress various physics tick stages?
 public class BreastPhysics {
 
     public static final float TIGHTNESS_REDUCTION_FACTOR = 0.15F;
@@ -259,35 +262,22 @@ public class BreastPhysics {
     }
 
     private void tickArmSwing(LivingEntity entity, RandomSource random, final float bounceIntensity) {
-        int swingDuration = entity.getCurrentSwingDuration();
+        final var state = getSwingState(entity);
         // Require that either the current swing duration is 2 ticks, or the swing duration from the previous tick is,
         // as any faster and the arm effectively doesn't swing at all; we check the previous tick's swing duration for
         // reasons explained later on in this block
-        if((swingDuration > 1 || lastSwingDuration > 1) && entity.getPose() != Pose.SLEEPING) {
-            float rawAmplifier = 0f;
-            if(swingDuration < 6) {
-                rawAmplifier = 0.15f * (6 - swingDuration);
-            } else if(swingDuration > 6) {
-                rawAmplifier = -0.055f * (swingDuration - 6);
-            }
-            // Cap our amplifier at the swing durations of Mining Fatigue IV/Haste II
-            float amplifier = Math.clamp(1 + rawAmplifier, 0.6f, 1.3f);
+        if((state.duration > 1 || lastSwingDuration > 1) && entity.getPose() != Pose.SLEEPING) {
+            float amplifier = Math.clamp(1 + state.amplifier, 0.6f, 1.3f);
 
-            HumanoidArm swingingArm = entity.swingingArm == InteractionHand.MAIN_HAND ? entity.getMainArm() : entity.getMainArm().getOpposite();
-            int swingTickDelta = entity.swingTime - lastSwingTick;
+            int swingTickDelta = state.tick - lastSwingTick;
             float swingProgress = distanceFromMedian(0, lastSwingDuration, Math.clamp(lastSwingTick, 0, lastSwingDuration));
-            HumanoidArm swingingToward = swingProgress > -0.2f ? swingingArm.getOpposite() : swingingArm;
+            HumanoidArm swingingToward = swingProgress > -0.2f ? state.arm.getOpposite() : state.arm;
 
             // consistently apply even with short swing durations, such as with haste
-            int everyNthTick = Math.clamp(swingDuration - 1, 1, 5);
-            if(entity.swinging && entity.tickCount % everyNthTick == 0) {
+            int everyNthTick = Math.clamp(state.duration - 1, 1, 5);
+            if(state.isSwinging && entity.tickCount % everyNthTick == 0) {
                 this.targetBounceY += (random.nextBoolean() ? -0.25f : 0.25f) * amplifier * bounceIntensity;
-                // The regular amplifier here makes this look relatively unnatural at high levels of mining fatigue,
-                // so instead we're increasing the potency of negative amplifiers (and decreasing positive amplifiers),
-                // and clamping this at a lower range than normal.
-                // The effective range of these numbers is around the swing durations of Mining Fatigue V to Haste II.
-                float xAmp = Math.clamp(1 + (rawAmplifier * (rawAmplifier < 0 ? 1.625f : 0.8f)), 0.25f, 1.225f);
-                this.targetBounceX = 0.325f * xAmp * bounceIntensity * (swingingArm == HumanoidArm.RIGHT ? -1f : 1f);
+                this.targetBounceX = 0.325f * state.xAmplifier * bounceIntensity * (state.arm == HumanoidArm.RIGHT ? -1f : 1f);
             }
 
             if(swingTickDelta < 0 && lastSwingTick != lastSwingDuration - 1) {
@@ -296,18 +286,18 @@ public class BreastPhysics {
                 // Note that we don't check if the player's arm is currently swinging here to account for cases like
                 // haste being used to reset a player's swing; one notable example of this is Wynncraft's spell casting,
                 // which applies haste to the player when a spell is successfully cast.
-                this.targetRotVel += (swingingArm == HumanoidArm.RIGHT ? -4f : 4f) * Math.abs(swingProgress) * bounceIntensity;
-            } else if(entity.swinging && swingDuration > 1) {
+                this.targetRotVel += (state.arm == HumanoidArm.RIGHT ? -4f : 4f) * Math.abs(swingProgress) * bounceIntensity;
+            } else if(state.isSwinging && state.duration > 1) {
                 // Otherwise if the swing animation isn't interrupted, attempt to rotate slightly counter to the
                 // direction that the body is currently moving
                 this.targetRotVel += (swingingToward == HumanoidArm.RIGHT ? -0.2f : 0.2f) * amplifier * bounceIntensity;
             }
-            lastSwingTick = entity.swingTime;
+            lastSwingTick = state.tick;
         }
-        if(!entity.swinging) {
+        if(!state.isSwinging) {
             lastSwingTick = 0;
         }
-        lastSwingDuration = Math.max(swingDuration, 1);
+        lastSwingDuration = Math.max(state.duration, 1);
     }
 
     private void finishTick() {
@@ -416,5 +406,57 @@ public class BreastPhysics {
             point = -(median - (point - median));
         }
         return point / median;
+    }
+
+    @ApiStatus.Internal
+    public static SwingState getSwingState(final LivingEntity entity) {
+        final int swingDuration, swingTime;
+        final HumanoidArm swingingArm;
+        //~ if >26.2 'swinging' -> 'isSwinging()'
+        final boolean isSwinging = entity.swinging;
+
+        //? if >26.2 {
+        /*var swing = entity.swingState;
+        var currentSwing = swing.currentSwing;
+        swingDuration = currentSwing == null ? 6 : currentSwing.durationTicks();
+        swingTime = currentSwing == null ? 0 : swing.ticks;
+        swingingArm = currentSwing == null ? entity.getMainArm() : currentSwing.hand().asArm(entity.getMainArm());
+        *///?} else {
+        swingDuration = entity.getCurrentSwingDuration();
+        swingTime = entity.swingTime;
+        swingingArm = entity.swingingArm == net.minecraft.world.InteractionHand.MAIN_HAND ? entity.getMainArm() : entity.getMainArm().getOpposite();
+        //?}
+
+        final float rawAmplifier;
+        if(swingDuration < 6) {
+            rawAmplifier = 0.15f * (6 - swingDuration);
+        } else if(swingDuration > 6) {
+            rawAmplifier = -0.055f * (swingDuration - 6);
+        } else {
+            rawAmplifier = 0f;
+        }
+
+        final float reduced = rawAmplifier < 0 ? 1 + (rawAmplifier / 1.5f) : (float)Math.pow(1 + rawAmplifier, -0.65);
+        final float xAmp = Mth.clamp(reduced, 0.25f, 1.225f);
+
+        return new SwingState(
+            /*isSwinging=*/ isSwinging,
+            /*tick =*/ swingTime,
+            /*duration =*/ swingDuration,
+            /*arm=*/ swingingArm,
+            /*amplifier=*/ rawAmplifier,
+            /*xAmplifier=*/ xAmp
+        );
+    }
+
+    @ApiStatus.Internal
+    public record SwingState(
+        boolean isSwinging,
+        int tick,
+        int duration,
+        HumanoidArm arm,
+        float amplifier,
+        float xAmplifier
+    ) {
     }
 }

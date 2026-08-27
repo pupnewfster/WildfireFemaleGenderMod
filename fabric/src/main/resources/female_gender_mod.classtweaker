@@ -1,8 +1,5 @@
 classTweaker  v2  official
 
-accessible method net/minecraft/world/entity/LivingEntity getCurrentSwingDuration ()I
-accessible class net/minecraft/client/renderer/entity/layers/EquipmentLayerRenderer$TrimSpriteKey
-accessible method net/minecraft/client/renderer/entity/layers/EquipmentLayerRenderer$TrimSpriteKey <init> (Lnet/minecraft/world/item/equipment/trim/ArmorTrim;Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;)V
 accessible method net/minecraft/client/renderer/entity/layers/EquipmentLayerRenderer getColorForLayer (Lnet/minecraft/client/resources/model/EquipmentClientInfo$Layer;I)I
 accessible method net/minecraft/client/gui/screens/inventory/InventoryScreen extractRenderState (Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;
 extendable method net/minecraft/client/model/Model renderToBuffer (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
@@ -23,6 +20,16 @@ accessible method net/minecraft/client/renderer/entity/ArmorStandRenderer getRen
 
 accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer isBodyVisible (Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;)Z
 accessible method net/minecraft/client/renderer/entity/IllusionerRenderer isBodyVisible (Lnet/minecraft/client/renderer/entity/state/IllusionerRenderState;)Z
+
+#? if >=26.3-snapshot-10 {
+#accessible field net/minecraft/world/entity/LivingEntity swingState Lnet/minecraft/world/entity/LivingEntity$SwingState;
+#accessible field net/minecraft/world/entity/LivingEntity$SwingState currentSwing Lnet/minecraft/world/entity/LivingEntity$SwingDescription;
+#accessible field net/minecraft/world/entity/LivingEntity$SwingState ticks I
+#?} else {
+accessible method net/minecraft/world/entity/LivingEntity getCurrentSwingDuration ()I
+accessible class net/minecraft/client/renderer/entity/layers/EquipmentLayerRenderer$TrimSpriteKey
+accessible method net/minecraft/client/renderer/entity/layers/EquipmentLayerRenderer$TrimSpriteKey <init> (Lnet/minecraft/world/item/equipment/trim/ArmorTrim;Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;)V
+#?}
 
 #? if <26.2
 #accessible method net/minecraft/client/Minecraft isMultiplayerServer ()Z

@@ -18,18 +18,15 @@
 
 package com.wildfire.neoforge.client;
 
-import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
 import com.wildfire.api.WildfireAPI;
 import com.wildfire.client.ClientHelper;
 import com.wildfire.common.WildfireGender;
 import com.wildfire.client.render.GenderRenderState;
-import java.util.Objects;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.context.ContextKey;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jspecify.annotations.Nullable;
@@ -52,10 +49,16 @@ public class NeoClientHelper implements ClientHelper {
         return state.getRenderData(STATE);
     }
 
+    //? if <=26.2 {
     @Override
-    public boolean validateSessionUrl(final YggdrasilMinecraftSessionService service, final String expected) {
+    public boolean validateSessionUrl(final com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService service, final String expected) {
         //Note: We need to use reflection here as Neo protects certain packages from coremods
-        String baseUrl = ObfuscationReflectionHelper.getPrivateValue(YggdrasilMinecraftSessionService.class, service, "baseUrl");
-        return Objects.equals(baseUrl, expected);
+        String baseUrl = net.neoforged.fml.util.ObfuscationReflectionHelper.getPrivateValue(
+            com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.class,
+            service,
+            "baseUrl"
+        );
+        return java.util.Objects.equals(baseUrl, expected);
     }
+    //?}
 }

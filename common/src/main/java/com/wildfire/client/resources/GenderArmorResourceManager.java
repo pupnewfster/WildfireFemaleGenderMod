@@ -69,10 +69,13 @@ public final class GenderArmorResourceManager extends SimpleJsonResourceReloadLi
     private void handleLegacyFiles(ResourceManager manager, Map<Identifier, IGenderArmor> result) {
         int newSize = result.size();
         Set<IGenderArmor> legacyElements = new ReferenceOpenHashSet<>();
+        // TODO is there an alternative for this?
+        //? if <=26.2 {
         scanDirectory(manager, LEGACY_PATH_CONVERTER, JsonOps.INSTANCE, IGenderArmor.CODEC.validate(armor -> {
             legacyElements.add(armor);
             return DataResult.success(armor);
         }), result);
+        //?}
         if (newSize != result.size()) {
             for (final Map.Entry<Identifier, IGenderArmor> entry : result.entrySet()) {
                 if (legacyElements.contains(entry.getValue())) {

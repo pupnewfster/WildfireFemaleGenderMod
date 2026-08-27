@@ -1,0 +1,12 @@
+{
+  "female_gender_mod.appearance_settings.title": "Character Personalisation",
+  "female_gender_mod.breast_customization.tab_customization": "Customisation",
+  "female_gender_mod.char_settings.hide_in_armor": "Hide In Armour: %1$s",
+  "female_gender_mod.char_settings.override_armor_physics": "Armour Physics: %1$s",
+  "female_gender_mod.char_settings.show_armor_stat": "Show Armour Tooltip: %1$s",
+  "female_gender_mod.command.single_player.armor_stand.description": "Spawns an armour stand with armour copying your breast settings pre-equipped",
+  "female_gender_mod.command.single_player.armor_stand.error.no_component": "Returned breast data component was null; do you have Hide in Armour on?",
+  "female_gender_mod.first_time_setup.description": "Would you like to enable cloud server syncing for your gender settings? This feature allows other players to view your customised gender appearance, even if the server doesn't have the mod installed.",
+  "modmenu.descriptionTranslation.female_gender_mod": "Adds extra customisation options to the player model by adding breasts for a more feminine appearance",
+  "neoforge.screen.mods.info.description.female_gender_mod": "Adds extra customisation options to the player model by adding breasts for a more feminine appearance"
+}

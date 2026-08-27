@@ -18,6 +18,7 @@
 
 package com.wildfire.fabric.client;
 
+//~ !entity_types
 import com.wildfire.client.WildfireClientEventHandler;
 import com.wildfire.client.WildfireGenderClient;
 import com.wildfire.client.WildfireKeyBindings;

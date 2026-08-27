@@ -18,11 +18,10 @@
 
 package com.wildfire.client.cloud;
 
-import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
-import com.wildfire.client.ClientHelper;
 import com.wildfire.common.WildfireGender;
 import net.minecraft.client.Minecraft;
+import org.jspecify.annotations.Nullable;
+import java.util.Map;
 
 public final class CloudUtils {
     private CloudUtils() {
@@ -30,26 +29,28 @@ public final class CloudUtils {
     }
 
     private static boolean loggedSessionTamperWarning = false;
+    //? if <=26.2
     private static final String EXPECTED_YGGDRASIL_BASE_URL = "https://sessionserver.mojang.com/session/minecraft/";
 
-    static MinecraftSessionService getSessionService() {
-        return Minecraft.getInstance().services().sessionService();
-    }
-
     static boolean hasTheSessionServiceBeenTamperedWith() {
-        var sessionService = getSessionService();
+        var sessionService = Minecraft.getInstance().services().sessionService();
 
         // minecraft normally uses yggdrasil here; if this is not the case, either mojang has made some serious
         // changes to sessions, or someone is replacing this with something that shouldn't be here.
-        if(sessionService.getClass() != YggdrasilMinecraftSessionService.class) {
+        //~ if >26.2 'yggdrasil.YggdrasilMinecraftSessionService' -> 'services.MinecraftServicesSessionService'
+        if(sessionService.getClass() != com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.class) {
             logSessionTamperWarning("Detected likely session service tampering; got {} instead of the expected Yggdrasil session service", sessionService.getClass());
             return true;
         } else {
+            // TODO is it possible to fix this for 26.3?
+            //? if <=26.2 {
+            var yggdrasil = (com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService) sessionService;
             // additionally verify for potential cracked client tampering here
-            if(!ClientHelper.INSTANCE.validateSessionUrl((YggdrasilMinecraftSessionService) sessionService, EXPECTED_YGGDRASIL_BASE_URL)) {
+            if(!com.wildfire.client.ClientHelper.INSTANCE.validateSessionUrl(yggdrasil, EXPECTED_YGGDRASIL_BASE_URL)) {
                 logSessionTamperWarning("Detected likely session service tampering; Yggdrasil base URL is not the expected Mojang-provided value");
                 return true;
             }
+            //?}
         }
 
         return false;
@@ -63,5 +64,10 @@ public final class CloudUtils {
         WildfireGender.LOGGER.warn(message, args);
         WildfireGender.LOGGER.warn("Cloud sync will be unavailable for this session");
         loggedSessionTamperWarning = true;
+    }
+
+    public static String buildQuery(@Nullable Map<String, @Nullable Object> query) {
+        //~ if >26.2 'HttpAuthenticationService' -> 'HttpDiscoveryService'
+        return com.mojang.authlib.HttpAuthenticationService.buildQuery(query);
     }
 }

@@ -1,0 +1,9 @@
+{
+  "female_hurt": {
+    "sounds": [
+      "female_gender_mod:female_damage",
+      "female_gender_mod:female_damage2"
+    ],
+    "subtitle": "hurt.female_gender_mod.female"
+  }
+}

@@ -119,7 +119,7 @@ public class WildfireCloudSyncScreen extends BaseWildfireScreen {
 
         /*this.addDrawableChild(btnHelp = new WildfireButton(this.width / 2 + 73 - 10, yPos - 11, 9, 9, Text.literal("?"),
                 button -> {
-                    //client.setScreen(new WildfireCloudDetailsScreen(this, client.player.getUuid())); // Disabled for now. Not complete
+                    //client.gui.setScreen(new WildfireCloudDetailsScreen(this, client.player.getUuid())); // Disabled for now. Not complete
                     // BUTTON IS SUPPOSED TO DO NOTHING AT THE MOMENT
                 }));*/
     }

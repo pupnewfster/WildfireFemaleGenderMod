@@ -18,7 +18,6 @@
 
 package com.wildfire.client;
 
-import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
 import com.wildfire.client.config.ClientConfig;
 import com.wildfire.common.WildfireHelper;
 import com.wildfire.client.render.GenderRenderState;
@@ -47,5 +46,6 @@ public interface ClientHelper {
 
     @Nullable GenderRenderState getRenderState(HumanoidRenderState state);
 
-    boolean validateSessionUrl(YggdrasilMinecraftSessionService service, String expected);
+    //? if <=26.2
+    boolean validateSessionUrl(com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService service, String expected);
 }

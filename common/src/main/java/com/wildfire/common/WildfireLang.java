@@ -239,13 +239,13 @@ public enum WildfireLang {
     }
 
     //? if <26.2 {
-    public MutableComponent translateColored(ChatFormatting color) {
+    /*public MutableComponent translateColored(ChatFormatting color) {
         return translate().withStyle(color);
     }
     public MutableComponent translateColored(ChatFormatting color, Object... args) {
         return translate(args).withStyle(color);
     }
-    //?}
+    *///?}
 
     public MutableComponent translate() {
         return Component.translatable(translationKey);

@@ -18,6 +18,7 @@
 
 package com.wildfire.common.mixins;
 
+//~ !entity_types
 import com.llamalad7.mixinextras.sugar.Local;
 import com.wildfire.common.WildfireEventHandler;
 import com.wildfire.common.entitydata.BreastDataComponent;

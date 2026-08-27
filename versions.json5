@@ -4,5 +4,6 @@
     "versions": {
         "26.1:26.1.2": ["", "common", "fabric", "neoforge"],
         "26.2:26.2": ["", "common", "fabric", "neoforge"],
+        "26.3:26.3-snapshot-10": ["", "common", "fabric"],
     }
 }

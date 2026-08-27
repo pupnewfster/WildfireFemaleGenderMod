@@ -31,6 +31,7 @@ issue_tracker = "https://github.com/FemaleGenderMod/FemaleGenderMod/issues"
 # If a specific MC version needs a newer version than the initial release one (or needs a snapshot version),
 # override it for the specific project version
 dependencies.neoform_timestamp = "1"
+dependencies.fabric_loader_version = "0.19.3"
 
 # Note that mod menu may be several versions out of date; this is fine, as we only care about using this
 # for its API, which shouldn't realistically need to be updated often (if ever).
@@ -42,9 +43,8 @@ publish.curseforge = "456319"
 publish.modrinth = "bcOsQHnC"
 
 ["26.1"]
-    dependencies.minecraft = ">=26.1 <26.2"
+    meta.supported_minecraft_versions = ">=26.1 <26.2"
     dependencies.fabric_api = "0.144.3"
-    dependencies.fabric_loader_version = "0.19.2"
     dependencies.neo_version = "26.1.2.97"
     dependencies.min_neo_version = "26.1.2.97"
     publish.version_title = "26.1.x"
@@ -52,12 +52,21 @@ publish.modrinth = "bcOsQHnC"
     publish.max_version = "26.1.2"
 
 ["26.2"]
-    dependencies.minecraft = ">=26.2 <26.3"
+    meta.supported_minecraft_versions = ">=26.2 <26.3"
     dependencies.fabric_api = "0.152.1"
-    dependencies.fabric_loader_version = "0.19.2"
     dependencies.neoform_timestamp = "2"
     dependencies.neo_version = "26.2.0.64"
     dependencies.min_neo_version = "26.2.0.64"
     publish.version_title = "26.2"
     publish.min_version = "26.2"
+    publish.max_version = "26.2"
+
+["26.3"]
+    meta.supported_minecraft_versions = ">=26.3-alpha.10 <26.3"
+    dependencies.fabric_api = "0.158.3"
+    dependencies.neoform_timestamp = "1"
+    #dependencies.neo_version = "26.2.0.64"
+    #dependencies.min_neo_version = "26.2.0.64"
+    publish.version_title = "26.3"
+    publish.min_version = "26.3"
     publish.max_version = "latest"

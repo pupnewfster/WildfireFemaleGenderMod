@@ -18,10 +18,8 @@
 
 package com.wildfire.fabric.client;
 
-import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
 import com.wildfire.client.ClientHelper;
 import com.wildfire.common.WildfireGender;
-import com.wildfire.fabric.client.mixins.accessors.YggdrasilMinecraftSessionServiceAccessor;
 import com.wildfire.client.render.GenderRenderState;
 import java.util.Objects;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
@@ -53,9 +51,11 @@ public class FabricClientHelper implements ClientHelper {
         return state.getData(STATE);
     }
 
+    //? if <=26.2 {
     @Override
-    public boolean validateSessionUrl(final YggdrasilMinecraftSessionService service, String expected) {
-        var accessor = (YggdrasilMinecraftSessionServiceAccessor) service;
+    public boolean validateSessionUrl(final com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService service, String expected) {
+        var accessor = (com.wildfire.fabric.client.mixins.accessors.YggdrasilMinecraftSessionServiceAccessor) service;
         return Objects.equals(accessor.getBaseUrl(), expected);
     }
+    //?}
 }

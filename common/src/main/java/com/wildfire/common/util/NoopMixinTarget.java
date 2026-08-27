@@ -16,14 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.wildfire.fabric.client.mixins.accessors;
+package com.wildfire.common.util;
 
-import org.spongepowered.asm.mixin.Mixin;
-
-/// @apiNote Only applied on the client side
-//~ if >=26.3-snapshot-10 'com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService' -> 'com.wildfire.common.util.NoopMixinTarget'
-@Mixin(com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.class)
-public interface YggdrasilMinecraftSessionServiceAccessor {
-    //? if <=26.2
-    @org.spongepowered.asm.mixin.gen.Accessor String getBaseUrl();
+/// Dummy class used as a no-op target for various mixins across versions where there is no applicable target
+public final class NoopMixinTarget {
+    private NoopMixinTarget() {
+    }
 }
