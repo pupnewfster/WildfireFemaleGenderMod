@@ -11,7 +11,7 @@ java.version = 25
 authors = [
     "WildfireRomeo",
     "celeste",
-    "pupnewfster"
+    "pupnewfster",
 ]
 contributors = [
     "Arcti_cc",
@@ -21,7 +21,7 @@ contributors = [
     "Kichura",
     "PinguinLars",
     "Powerless001",
-    "Crosby"
+    "Crosby",
 ]
 source_code = "https://github.com/FemaleGenderMod/FemaleGenderMod"
 issue_tracker = "https://github.com/FemaleGenderMod/FemaleGenderMod/issues"
@@ -32,7 +32,6 @@ issue_tracker = "https://github.com/FemaleGenderMod/FemaleGenderMod/issues"
 # override it for the specific project version
 dependencies.neoform_timestamp = "1"
 dependencies.fabric_loader_version = "0.19.3"
-
 # Note that mod menu may be several versions out of date; this is fine, as we only care about using this
 # for its API, which shouldn't realistically need to be updated often (if ever).
 dependencies.modmenu = "18.0.0-alpha.6"
@@ -64,6 +63,7 @@ publish.modrinth = "bcOsQHnC"
 ["26.3"]
     meta.supported_minecraft_versions = ">=26.3-alpha.10 <26.3"
     dependencies.fabric_api = "0.158.3"
+    # TODO remove this redundant property after full release assuming this isn't required
     dependencies.neoform_timestamp = "1"
     #dependencies.neo_version = "26.2.0.64"
     #dependencies.min_neo_version = "26.2.0.64"

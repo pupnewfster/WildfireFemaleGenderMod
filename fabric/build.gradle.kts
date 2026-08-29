@@ -73,9 +73,10 @@ loom {
         displayName = runtimeEnvironment.map { "Fabric ${it.replaceFirstChar(Char::uppercase)}" }
         // by default loom will use versions/*/run for the run dir, so instead tell it to use the
         // run dir in the project root directory
-        runDirectory = file("../../run")
+        runDirectory = sc.branch.project.layout.projectDirectory.dir("run")
         preferGradleTask = true
         if (name == "datagen") {
+            // always disable DevAuth in datagen, even if it's enabled in the DevAuth config/other similar means
             jvmArguments.add("-Ddevauth.enabled=false")
             sourceSet.set("runData")
         } else {

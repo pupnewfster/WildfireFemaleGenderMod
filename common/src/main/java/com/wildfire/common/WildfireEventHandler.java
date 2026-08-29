@@ -18,13 +18,11 @@
 
 package com.wildfire.common;
 
-import com.wildfire.common.entitydata.BreastDataComponent;
 import com.wildfire.common.entitydata.PlayerConfigHolder;
 import com.wildfire.common.networking.WildfireSync;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 public final class WildfireEventHandler {
     private WildfireEventHandler() {
@@ -47,26 +45,6 @@ public final class WildfireEventHandler {
             // we wouldn't sync while they're out of tracking distance, and as such, their settings would be out
             // of sync until they relog.
             WildfireSync.sendToClient(syncTo, genderToSync);
-        }
-    }
-
-    /// Apply player settings to chestplates equipped onto armor stands
-    public static void onEquipArmorStand(Player player, ItemStack item) {
-        PlayerConfigHolder playerConfig = WildfireGender.getPlayerById(player.getUUID());
-        if(playerConfig == null) {
-            // while we shouldn't have our tag on the stack still, we're still checking to catch any armor
-            // that may still have the tag from older versions, or from potential cross-mod interactions
-            // which allow for removing items from armor stands without calling the vanilla
-            // #equip and/or #onBreak methods
-            BreastDataComponent.removeFromStack(item);
-            return;
-        }
-
-        // Note that we always attach player data to the item stack as a server has no concept of resource packs,
-        // making it impossible to compare against any armor data that isn't registered through the mod API.
-        BreastDataComponent component = BreastDataComponent.fromPlayer(player, playerConfig);
-        if(component != null) {
-            component.write(item);
         }
     }
 }

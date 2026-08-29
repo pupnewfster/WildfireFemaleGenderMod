@@ -23,7 +23,6 @@ import com.wildfire.client.config.ClientConfig;
 import com.wildfire.common.entitydata.EntityConfigHolder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;

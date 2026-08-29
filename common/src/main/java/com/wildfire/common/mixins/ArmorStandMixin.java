@@ -53,8 +53,7 @@ abstract class ArmorStandMixin extends LivingEntity {
             return stack;
         }
 
-        WildfireEventHandler.onEquipArmorStand(player, stack);
-
+        BreastDataComponent.writeToStack(player, stack);
         return stack;
     }
 
