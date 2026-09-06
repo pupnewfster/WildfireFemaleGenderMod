@@ -54,8 +54,12 @@ public final class WildfireModelRenderer {
                 float k = vertex.y() / 16.0F;
                 float l = vertex.z() / 16.0F;
                 Vector4f vector4f = new Vector4f(j, k, l, 1.0F).mul(matrix4f);
-                vertexConsumer.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), color, vertex.u(), vertex.v(),
-                    overlay, light, normalX, normalY, normalZ);
+                vertexConsumer.addVertex(vector4f.x(), vector4f.y(), vector4f.z())
+                    .setColor(color)
+                    .setUv(vertex.u(), vertex.v())
+                    .setOverlay(overlay)
+                    .setLight(light)
+                    .setNormal(normalX, normalY, normalZ);
             }
         }
     }

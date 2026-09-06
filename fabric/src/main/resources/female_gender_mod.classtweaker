@@ -23,14 +23,12 @@ accessible method net/minecraft/client/renderer/entity/ArmorStandRenderer getRen
 accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer isBodyVisible (Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;)Z
 accessible method net/minecraft/client/renderer/entity/IllusionerRenderer isBodyVisible (Lnet/minecraft/client/renderer/entity/state/IllusionerRenderState;)Z
 
-#? if >=26.3-snapshot-10 {
-#accessible field net/minecraft/world/entity/LivingEntity swingState Lnet/minecraft/world/entity/LivingEntity$SwingState;
-#accessible field net/minecraft/world/entity/LivingEntity$SwingState currentSwing Lnet/minecraft/world/entity/LivingEntity$SwingDescription;
-#accessible field net/minecraft/world/entity/LivingEntity$SwingState ticks I
+#? if >=26.3-pre-2 {
+accessible field net/minecraft/world/entity/LivingEntity swingState Lnet/minecraft/world/entity/LivingEntity$SwingState;
+accessible field net/minecraft/world/entity/LivingEntity$SwingState currentSwing Lnet/minecraft/world/entity/LivingEntity$SwingDescription;
+accessible field net/minecraft/world/entity/LivingEntity$SwingState ticks I
 #?} else {
-accessible method net/minecraft/world/entity/LivingEntity getCurrentSwingDuration ()I
-accessible class net/minecraft/client/renderer/entity/layers/EquipmentLayerRenderer$TrimSpriteKey
-accessible method net/minecraft/client/renderer/entity/layers/EquipmentLayerRenderer$TrimSpriteKey <init> (Lnet/minecraft/world/item/equipment/trim/ArmorTrim;Lnet/minecraft/client/resources/model/EquipmentClientInfo$LayerType;Lnet/minecraft/resources/ResourceKey;)V
+#accessible method net/minecraft/world/entity/LivingEntity getCurrentSwingDuration ()I
 #?}
 
 #? if <26.2

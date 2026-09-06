@@ -195,10 +195,10 @@ public class GenderLayer<STATE extends HumanoidRenderState, MODEL extends Humano
         }
         if(bounceEnabled) {
             //? if <=26.2 {
-            matrixStack.mulPose(Axis.YP.rotationDegrees(side.forSide(lPhysBounceRotation, rPhysBounceRotation)));
-            //?} else {
-            /*matrixStack.rotateDegrees(Axis.YP, side.forSide(lPhysBounceRotation, rPhysBounceRotation));
-            *///?}
+            /*matrixStack.mulPose(Axis.YP.rotationDegrees(side.forSide(lPhysBounceRotation, rPhysBounceRotation)));
+            *///?} else {
+            matrixStack.rotateDegrees(Axis.YP, side.forSide(lPhysBounceRotation, rPhysBounceRotation));
+            //?}
         }
         if(!isUniboob) {
             matrixStack.translate(side.leftOrNegate(0.0625f * 2), 0, 0);
@@ -218,8 +218,8 @@ public class GenderLayer<STATE extends HumanoidRenderState, MODEL extends Humano
         }
 
         var rotationTransform = side.forSide(Axis.YP, Axis.YN)
-            //~ if >=26.3-snapshot-10 'rotationDegrees(' -> 'rotateDegrees(new org.joml.Matrix3f(), '
-            .rotationDegrees(outwardAngle)
+            //~ if >=26.3-pre-2 'rotationDegrees(' -> 'rotateDegrees(new org.joml.Matrix3f(), '
+            .rotateDegrees(new org.joml.Matrix3f(), outwardAngle)
             .rotateX(-35f * rotation * Mth.DEG_TO_RAD);
 
         if(breathingAnimation) {
@@ -227,8 +227,8 @@ public class GenderLayer<STATE extends HumanoidRenderState, MODEL extends Humano
             rotationTransform.rotateX(f5 * Mth.DEG_TO_RAD);
         }
 
-        //~ if >=26.3-snapshot-10 'rotationTransform' -> 'new org.joml.Matrix4f(rotationTransform)'
-        matrixStack.mulPose(rotationTransform);
+        //~ if >=26.3-pre-2 'rotationTransform' -> 'new org.joml.Matrix4f(rotationTransform)'
+        matrixStack.mulPose(new org.joml.Matrix4f(rotationTransform));
         matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
     }
 
@@ -240,8 +240,10 @@ public class GenderLayer<STATE extends HumanoidRenderState, MODEL extends Humano
         boolean glowing = state.appearsGlowing();
 
         RenderType type = renderer.getRenderType(state, bodyVisible, forceTransparent, glowing);
-        // Convenience method end
-        if(type == null) return; // only render if the player is visible in some capacity
+        if(type == null) {
+            // only render if the player is visible in some capacity
+            return;
+        }
 
         int baseColor = forceTransparent ? 0x26FFFFFF : CommonColors.WHITE;
         //Note: We ignore LivingEntityRenderer#getModelTint as it is always WHITE for entities we attach the layer to
@@ -249,14 +251,14 @@ public class GenderLayer<STATE extends HumanoidRenderState, MODEL extends Humano
         //Note: While the living entity renderer uses the light coords, we mirror Deadmau5EarsLayer and use the passed in light coords
         // (which the renderer passes the state's light coords in, but we might as well be consistent with how vanilla does extra body parts as a layer)
         var model = side.forSide(lBreast, rBreast);
-        //~ if >=26.3-snapshot-10 'outlineColor, null' -> 'outlineColor' {
-        nodeCollector.submitModel(new BreastModel(model), state, poseStack, type, lightCoords, overlayCoords, baseColor, null, state.outlineColor, null);
+        //~ if >=26.3-pre-2 'outlineColor, null' -> 'outlineColor' {
+        nodeCollector.submitModel(new BreastModel(model), state, poseStack, type, lightCoords, overlayCoords, baseColor, null, state.outlineColor);
 
         if (genderState.hasJacketLayer) {
             poseStack.translate(0, 0, -0.015f);
             poseStack.scale(1.05f, 1.05f, 1.05f);
             var jacketModel = side.forSide(lBreastWear, rBreastWear);
-            nodeCollector.order(1).submitModel(new BreastModel(jacketModel), state, poseStack, type, lightCoords, overlayCoords, baseColor, null, state.outlineColor, null);
+            nodeCollector.order(1).submitModel(new BreastModel(jacketModel), state, poseStack, type, lightCoords, overlayCoords, baseColor, null, state.outlineColor);
         }
         //~}
     }
@@ -276,7 +278,6 @@ public class GenderLayer<STATE extends HumanoidRenderState, MODEL extends Humano
 
     @FunctionalInterface
     protected interface BreastSideRenderer<STATE extends HumanoidRenderState> {
-
         void render(STATE state, GenderRenderState genderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, int lightCoords, int overlayCoords, BreastSide side);
     }
 }

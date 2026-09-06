@@ -62,7 +62,7 @@ publish.modrinth = "bcOsQHnC"
 
 ["26.3"]
     meta.supported_minecraft_versions = ">=26.3-alpha.10 <26.3"
-    dependencies.fabric_api = "0.158.3"
+    dependencies.fabric_api = "0.159.4"
     # TODO remove this redundant property after full release assuming this isn't required
     dependencies.neoform_timestamp = "1"
     #dependencies.neo_version = "26.2.0.64"

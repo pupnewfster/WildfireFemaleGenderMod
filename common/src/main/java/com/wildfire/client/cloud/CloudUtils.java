@@ -30,7 +30,7 @@ public final class CloudUtils {
 
     private static boolean loggedSessionTamperWarning = false;
     //? if <=26.2
-    private static final String EXPECTED_YGGDRASIL_BASE_URL = "https://sessionserver.mojang.com/session/minecraft/";
+    //private static final String EXPECTED_YGGDRASIL_BASE_URL = "https://sessionserver.mojang.com/session/minecraft/";
 
     static boolean hasTheSessionServiceBeenTamperedWith() {
         var sessionService = Minecraft.getInstance().services().sessionService();
@@ -38,19 +38,19 @@ public final class CloudUtils {
         // minecraft normally uses yggdrasil here; if this is not the case, either mojang has made some serious
         // changes to sessions, or someone is replacing this with something that shouldn't be here.
         //~ if >26.2 'yggdrasil.YggdrasilMinecraftSessionService' -> 'services.MinecraftServicesSessionService'
-        if(sessionService.getClass() != com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.class) {
+        if(sessionService.getClass() != com.mojang.authlib.services.MinecraftServicesSessionService.class) {
             logSessionTamperWarning("Detected likely session service tampering; got {} instead of the expected Yggdrasil session service", sessionService.getClass());
             return true;
         } else {
             // TODO is it possible to fix this for 26.3?
             //? if <=26.2 {
-            var yggdrasil = (com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService) sessionService;
+            /*var yggdrasil = (com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService) sessionService;
             // additionally verify for potential cracked client tampering here
             if(!com.wildfire.client.ClientHelper.INSTANCE.validateSessionUrl(yggdrasil, EXPECTED_YGGDRASIL_BASE_URL)) {
                 logSessionTamperWarning("Detected likely session service tampering; Yggdrasil base URL is not the expected Mojang-provided value");
                 return true;
             }
-            //?}
+            *///?}
         }
 
         return false;
@@ -68,6 +68,6 @@ public final class CloudUtils {
 
     public static String buildQuery(@Nullable Map<String, @Nullable Object> query) {
         //~ if >26.2 'HttpAuthenticationService' -> 'HttpDiscoveryService'
-        return com.mojang.authlib.HttpAuthenticationService.buildQuery(query);
+        return com.mojang.authlib.HttpDiscoveryService.buildQuery(query);
     }
 }

@@ -47,5 +47,5 @@ public interface ClientHelper {
     @Nullable GenderRenderState getRenderState(HumanoidRenderState state);
 
     //? if <=26.2
-    boolean validateSessionUrl(com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService service, String expected);
+    //boolean validateSessionUrl(com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService service, String expected);
 }

@@ -21,9 +21,9 @@ package com.wildfire.fabric.client.mixins.accessors;
 import org.spongepowered.asm.mixin.Mixin;
 
 /// @apiNote Only applied on the client side
-//~ if >=26.3-snapshot-10 'com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService' -> 'com.wildfire.common.util.NoopMixinTarget'
-@Mixin(com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.class)
+//~ if >=26.3-pre-2 'com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService' -> 'com.wildfire.common.util.NoopMixinTarget'
+@Mixin(com.wildfire.common.util.NoopMixinTarget.class)
 public interface YggdrasilMinecraftSessionServiceAccessor {
     //? if <=26.2
-    @org.spongepowered.asm.mixin.gen.Accessor String getBaseUrl();
+    //@org.spongepowered.asm.mixin.gen.Accessor String getBaseUrl();
 }

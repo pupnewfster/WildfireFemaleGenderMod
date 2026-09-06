@@ -52,10 +52,10 @@ public class FabricClientHelper implements ClientHelper {
     }
 
     //? if <=26.2 {
-    @Override
+    /*@Override
     public boolean validateSessionUrl(final com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService service, String expected) {
         var accessor = (com.wildfire.fabric.client.mixins.accessors.YggdrasilMinecraftSessionServiceAccessor) service;
         return Objects.equals(accessor.getBaseUrl(), expected);
     }
-    //?}
+    *///?}
 }

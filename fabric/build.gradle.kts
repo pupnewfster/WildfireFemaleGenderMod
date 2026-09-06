@@ -71,6 +71,8 @@ loom {
 
     runConfigs.configureEach {
         displayName = runtimeEnvironment.map { "Fabric ${it.replaceFirstChar(Char::uppercase)}" }
+        generateRunConfig = true
+        ideConfigFolder = "Fabric"
         // by default loom will use versions/*/run for the run dir, so instead tell it to use the
         // run dir in the project root directory
         runDirectory = sc.branch.project.layout.projectDirectory.dir("run")

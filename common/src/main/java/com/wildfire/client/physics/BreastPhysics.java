@@ -412,19 +412,19 @@ public class BreastPhysics {
         final int swingDuration, swingTime;
         final HumanoidArm swingingArm;
         //~ if >26.2 'swinging' -> 'isSwinging()'
-        final boolean isSwinging = entity.swinging;
+        final boolean isSwinging = entity.isSwinging();
 
         //? if >26.2 {
-        /*var swing = entity.swingState;
+        var swing = entity.swingState;
         var currentSwing = swing.currentSwing;
         swingDuration = currentSwing == null ? 6 : currentSwing.durationTicks();
         swingTime = currentSwing == null ? 0 : swing.ticks;
         swingingArm = currentSwing == null ? entity.getMainArm() : currentSwing.hand().asArm(entity.getMainArm());
-        *///?} else {
-        swingDuration = entity.getCurrentSwingDuration();
+        //?} else {
+        /*swingDuration = entity.getCurrentSwingDuration();
         swingTime = entity.swingTime;
         swingingArm = entity.swingingArm == net.minecraft.world.InteractionHand.MAIN_HAND ? entity.getMainArm() : entity.getMainArm().getOpposite();
-        //?}
+        *///?}
 
         final float rawAmplifier;
         if(swingDuration < 6) {
