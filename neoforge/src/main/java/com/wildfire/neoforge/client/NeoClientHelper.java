@@ -61,8 +61,7 @@ public class NeoClientHelper implements ClientHelper {
             service,
             "baseUrl"
         );
-        *///? }
-        //? if >=26.3-pre-2 {
+        *///? } else {
         baseUrl = ((com.mojang.authlib.services.MinecraftServicesDiscoveryService) ObfuscationReflectionHelper.getPrivateValue(
             MinecraftServicesSessionService.class,
             service,
