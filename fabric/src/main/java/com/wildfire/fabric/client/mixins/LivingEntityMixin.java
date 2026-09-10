@@ -18,6 +18,7 @@
 
 package com.wildfire.fabric.client.mixins;
 
+//~ !entity_types
 import com.wildfire.client.WildfireClientEventHandler;
 import com.wildfire.common.WildfireGender;
 import com.wildfire.common.entitydata.PlayerConfigHolder;

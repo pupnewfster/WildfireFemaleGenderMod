@@ -70,14 +70,21 @@ loom {
     }
 
     runConfigs.configureEach {
-        generateRunConfig.set(stonecutter.current.isActive)
+        displayName = runtimeEnvironment.map { "Fabric ${it.replaceFirstChar(Char::uppercase)}" }
+        generateRunConfig = true
+        ideConfigFolder = "Fabric"
         // by default loom will use versions/*/run for the run dir, so instead tell it to use the
         // run dir in the project root directory
-        runDirectory = file("../../run")
-        preferGradleTask = true
+        runDirectory = sc.branch.project.layout.projectDirectory.dir("run")
         if (name == "datagen") {
+            // always disable DevAuth in datagen, even if it's enabled in the DevAuth config/other similar means
+            jvmArguments.add("-Ddevauth.enabled=false")
             sourceSet.set("runData")
         } else {
+            // Enable DCEVM when using JBR
+            if(javaToolchains.launcherFor(java.toolchain).map { it.metadata.vendor }.getOrElse("").contains("JetBrains")) {
+                jvmArguments.addAll("-XX:+AllowEnhancedClassRedefinition")
+            }
             sourceSet.set("runMain")
         }
     }

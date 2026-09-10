@@ -17,7 +17,7 @@ idea {
     }
 }
 
-stonecutter active "26.2"
+stonecutter active "26.3"
 
 tasks.named<Wrapper>("wrapper") {
     //Define wrapper values here so as to not have to always do so when updating gradlew.properties

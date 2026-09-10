@@ -18,12 +18,14 @@
 
 package com.wildfire.fabric.client.mixins.accessors;
 
-import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
+import com.mojang.authlib.services.MinecraftServicesSessionService;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 /// @apiNote Only applied on the client side
-@Mixin(YggdrasilMinecraftSessionService.class)
-public interface YggdrasilMinecraftSessionServiceAccessor {
-    @Accessor String getBaseUrl();
+@Mixin(MinecraftServicesSessionService.class)
+public interface SessionServiceAccessor {
+    @Accessor
+    //~ if >=26.3-pre-2 'String getBaseUrl' -> 'com.mojang.authlib.services.MinecraftServicesDiscoveryService getDiscoveryService'
+    com.mojang.authlib.services.MinecraftServicesDiscoveryService getDiscoveryService();
 }

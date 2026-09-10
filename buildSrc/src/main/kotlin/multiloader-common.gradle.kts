@@ -132,6 +132,7 @@ tasks.named<ProcessResources>("processResources") {
         "version" to modVersion,
         "minecraft_version" to stonecutterBuild.current.version,
         "major_minecraft_version" to stonecutterBuild.current.project,
+        "minecraft_version_range" to stonecutterBuild.properties["meta.supported_minecraft_versions"],
         "fabric_version" to stonecutterBuild.properties["dependencies.fabric_api"],
         "fabric_loader_version" to stonecutterBuild.properties["dependencies.fabric_loader_version"],
         "mod_name" to modName,
@@ -144,8 +145,9 @@ tasks.named<ProcessResources>("processResources") {
         "authors_list" to authors.asTomlList(),
         "contributors" to contributors.asListedElements(),
         "contributors_list" to contributors.asTomlList(),
-        "neoforge_version" to stonecutterBuild.properties["dependencies.min_neo_version"],
-        "java_version" to javaVersion
+        // may be omitted during snapshot cycles
+        "neoforge_version" to (stonecutterBuild.properties.getOrNull("dependencies.min_neo_version") ?: ""),
+        "java_version" to javaVersion,
     )
     inputs.properties(expandProps)
 
@@ -182,6 +184,13 @@ stonecutterBuild.replacements {
         replace("getToastManager(", "gui.toastManager(")
         replace("getTabList(", "hud.getTabList(")
         replace(".screen ", ".gui.screen() ")
+    }
+    string(stonecutterBuild.current.parsed >= "26.3-pre-2") {
+        replace("com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService", "com.mojang.authlib.services.MinecraftServicesSessionService")
+        replace("YggdrasilMinecraftSessionService", "MinecraftServicesSessionService")
+        replace("HttpAuthenticationService", "HttpDiscoveryService")
+    }
+    string(stonecutterBuild.current.parsed >= "26.2", "!entity_types") {
         replace("EntityType", "EntityTypes")
     }
     string(stonecutterBuild.current.parsed >= "26.2", "color_as_rgb") {

@@ -1,8 +1,9 @@
 {
     "$schema": "https://stonecutter.kikugie.dev/settings-schema/latest.json",
-    "vcs": "26.2",
+    "vcs": "26.3",
     "versions": {
         "26.1:26.1.2": ["", "common", "fabric", "neoforge"],
         "26.2:26.2": ["", "common", "fabric", "neoforge"],
+        "26.3:26.3-pre-2": ["", "common", "fabric"],
     }
 }

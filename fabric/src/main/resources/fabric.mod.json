@@ -41,7 +41,7 @@
         "fabric-rendering-v1": "*",
         "fabric-resource-loader-v1": "*",
         "fabric-registry-sync-v0": "*",
-        "minecraft": "~${major_minecraft_version}",
+        "minecraft": "${minecraft_version_range}",
         "java": ">=${java_version}"
     },
     "conflicts": {

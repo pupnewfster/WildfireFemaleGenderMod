@@ -37,7 +37,7 @@ neoForge {
         configureEach {
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             ideName = "NeoForge ${name.replaceFirstChar(Char::titlecase)} ($path)"
-            gameDirectory = file("../../run")
+            gameDirectory = sc.branch.project.layout.projectDirectory.dir("run")
 
             val forceAnsi = providers.gradleProperty("forge_force_ansi")
             if (forceAnsi.isPresent) {

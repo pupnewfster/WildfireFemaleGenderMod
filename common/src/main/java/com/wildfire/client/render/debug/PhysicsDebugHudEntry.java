@@ -45,6 +45,17 @@ public class PhysicsDebugHudEntry implements DebugScreenEntry {
 
         BothBreastsPhysics breastPhysics = config.breastPhysics();
         List<String> info = new ArrayList<>();
+
+        var swingState = BreastPhysics.getSwingState(player);
+        info.add(ChatFormatting.UNDERLINE + "Swing Progress");
+        if(!swingState.isSwinging()) {
+            info.add("Arm is not currently swinging");
+        } else {
+            info.add("Duration: " + swingState.tick() + "/" + swingState.duration());
+            info.add("Swing effect amplifiers: " + swingState.amplifier() + " (" + swingState.xAmplifier() + ")");
+        }
+        info.add("");
+
         if(config.breasts().physics().uniboob().get()) {
             info.add(ChatFormatting.UNDERLINE + "Breast Physics");
             add(info, breastPhysics.left());

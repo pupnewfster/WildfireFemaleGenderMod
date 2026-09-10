@@ -240,11 +240,12 @@ public final class CloudSync {
                 WildfireGender.LOGGER.info("Authenticating with Mojang session servers");
                 SyncLog.add(WildfireLang.SYNC_LOG_AUTH_MOJANG);
 
+                var sessionService = Minecraft.getInstance().services().sessionService();
                 var serverId = generateServerId();
                 var session = client.getUser();
 
                 try {
-                    CloudUtils.getSessionService().joinServer(Objects.requireNonNull(session.getProfileId()), session.getAccessToken(), serverId);
+                    sessionService.joinServer(Objects.requireNonNull(session.getProfileId()), session.getAccessToken(), serverId);
                 } catch(AuthenticationException e) {
                     SyncLog.add(WildfireLang.SYNC_LOG_AUTH_FAILED);
                     throw new RuntimeException(e);
