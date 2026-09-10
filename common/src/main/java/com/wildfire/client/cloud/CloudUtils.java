@@ -18,6 +18,7 @@
 
 package com.wildfire.client.cloud;
 
+import com.mojang.authlib.HttpDiscoveryService;
 import com.mojang.authlib.services.MinecraftServicesSessionService;
 import com.wildfire.client.ClientHelper;
 import com.wildfire.common.WildfireGender;
@@ -64,7 +65,6 @@ public final class CloudUtils {
     }
 
     public static String buildQuery(@Nullable Map<String, @Nullable Object> query) {
-        //~ if >26.2 'HttpAuthenticationService' -> 'HttpDiscoveryService'
-        return com.mojang.authlib.HttpDiscoveryService.buildQuery(query);
+        return HttpDiscoveryService.buildQuery(query);
     }
 }

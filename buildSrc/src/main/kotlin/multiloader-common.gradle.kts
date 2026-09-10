@@ -188,6 +188,7 @@ stonecutterBuild.replacements {
     string(stonecutterBuild.current.parsed >= "26.3-pre-2") {
         replace("com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService", "com.mojang.authlib.services.MinecraftServicesSessionService")
         replace("YggdrasilMinecraftSessionService", "MinecraftServicesSessionService")
+        replace("HttpAuthenticationService", "HttpDiscoveryService")
     }
     string(stonecutterBuild.current.parsed >= "26.2", "!entity_types") {
         replace("EntityType", "EntityTypes")
