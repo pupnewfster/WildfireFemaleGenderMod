@@ -20,14 +20,15 @@ package com.wildfire.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.wildfire.client.ClientHelper;
-import com.wildfire.common.WildfireGender;
-import com.wildfire.common.WildfireHelper;
-import com.wildfire.client.config.ClientConfig;
-import com.wildfire.common.entitydata.BreastState;
 import com.wildfire.api.uvs.UVLayout;
+import com.wildfire.client.ClientHelper;
+import com.wildfire.client.config.ClientConfig;
 import com.wildfire.client.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.client.render.WildfireModelRenderer.OverlayModelBox;
+import com.wildfire.common.WildfireGender;
+import com.wildfire.common.WildfireHelper;
+import com.wildfire.common.entitydata.BreastState;
+import java.util.Objects;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -39,8 +40,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.UnknownNullability;
-
-import java.util.Objects;
+import org.joml.Quaternionf;
 import org.jspecify.annotations.Nullable;
 
 // TODO split this into an AbstractGenderLayer?
@@ -217,9 +217,8 @@ public class GenderLayer<STATE extends HumanoidRenderState, MODEL extends Humano
             matrixStack.translate(0, 0, 0.01f);
         }
 
-        var rotationTransform = side.forSide(Axis.YP, Axis.YN)
-            //~ if >=26.3-pre-2 'rotationDegrees(' -> 'rotateDegrees(new org.joml.Matrix3f(), '
-            .rotateDegrees(new org.joml.Matrix3f(), outwardAngle)
+        Quaternionf rotationTransform = side.forSide(Axis.YP, Axis.YN)
+            .rotationDegrees(outwardAngle)
             .rotateX(-35f * rotation * Mth.DEG_TO_RAD);
 
         if(breathingAnimation) {
@@ -227,8 +226,7 @@ public class GenderLayer<STATE extends HumanoidRenderState, MODEL extends Humano
             rotationTransform.rotateX(f5 * Mth.DEG_TO_RAD);
         }
 
-        //~ if >=26.3-pre-2 'rotationTransform' -> 'new org.joml.Matrix4f(rotationTransform)'
-        matrixStack.mulPose(new org.joml.Matrix4f(rotationTransform));
+        matrixStack.last().rotate(rotationTransform);
         matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
     }
 
