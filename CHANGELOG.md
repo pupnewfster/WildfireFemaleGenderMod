@@ -10,5 +10,6 @@
 - The mod now requires the connected server to support a configuration phase hello packet, and will not attempt to sync without it
 - Syncing with the connected server will now omit irrelevant data from sync packets where possible
 - Fixed an issue with default skins using the wrong texture path in the UV Editor screen
+- Fix rendering of upside down entities in UIs (for players like Dinnerbone, Grumm, or any other names mods may tweak to be upside down).
 - Updated/added translations for Russian, Turkish, Spanish, Chinese, LOLCAT, and various English locales (Canadian, British, Australian, and Upside Down)
 - Holiday themes have been removed
