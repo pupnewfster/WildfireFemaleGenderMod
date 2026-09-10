@@ -18,10 +18,12 @@
 
 package com.wildfire.client.cloud;
 
+import com.mojang.authlib.services.MinecraftServicesSessionService;
+import com.wildfire.client.ClientHelper;
 import com.wildfire.common.WildfireGender;
+import java.util.Map;
 import net.minecraft.client.Minecraft;
 import org.jspecify.annotations.Nullable;
-import java.util.Map;
 
 public final class CloudUtils {
     private CloudUtils() {
@@ -29,28 +31,23 @@ public final class CloudUtils {
     }
 
     private static boolean loggedSessionTamperWarning = false;
-    //? if <=26.2
-    //private static final String EXPECTED_YGGDRASIL_BASE_URL = "https://sessionserver.mojang.com/session/minecraft/";
+    private static final String EXPECTED_YGGDRASIL_BASE_URL = "https://sessionserver.mojang.com/session/minecraft/";
 
     static boolean hasTheSessionServiceBeenTamperedWith() {
         var sessionService = Minecraft.getInstance().services().sessionService();
 
         // minecraft normally uses yggdrasil here; if this is not the case, either mojang has made some serious
         // changes to sessions, or someone is replacing this with something that shouldn't be here.
-        //~ if >26.2 'yggdrasil.YggdrasilMinecraftSessionService' -> 'services.MinecraftServicesSessionService'
-        if(sessionService.getClass() != com.mojang.authlib.services.MinecraftServicesSessionService.class) {
+        if(sessionService.getClass() != MinecraftServicesSessionService.class) {
             logSessionTamperWarning("Detected likely session service tampering; got {} instead of the expected Yggdrasil session service", sessionService.getClass());
             return true;
         } else {
-            // TODO is it possible to fix this for 26.3?
-            //? if <=26.2 {
-            /*var yggdrasil = (com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService) sessionService;
+            var yggdrasil = (MinecraftServicesSessionService) sessionService;
             // additionally verify for potential cracked client tampering here
-            if(!com.wildfire.client.ClientHelper.INSTANCE.validateSessionUrl(yggdrasil, EXPECTED_YGGDRASIL_BASE_URL)) {
+            if(!EXPECTED_YGGDRASIL_BASE_URL.equals(ClientHelper.INSTANCE.getSessionUrl(yggdrasil))) {
                 logSessionTamperWarning("Detected likely session service tampering; Yggdrasil base URL is not the expected Mojang-provided value");
                 return true;
             }
-            *///?}
         }
 
         return false;

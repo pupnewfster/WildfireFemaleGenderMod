@@ -185,6 +185,10 @@ stonecutterBuild.replacements {
         replace("getTabList(", "hud.getTabList(")
         replace(".screen ", ".gui.screen() ")
     }
+    string(stonecutterBuild.current.parsed >= "26.3-pre-2") {
+        replace("com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService", "com.mojang.authlib.services.MinecraftServicesSessionService")
+        replace("YggdrasilMinecraftSessionService", "MinecraftServicesSessionService")
+    }
     string(stonecutterBuild.current.parsed >= "26.2", "!entity_types") {
         replace("EntityType", "EntityTypes")
     }

@@ -18,9 +18,11 @@
 
 package com.wildfire.fabric.client;
 
+import com.mojang.authlib.services.MinecraftServicesSessionService;
 import com.wildfire.client.ClientHelper;
-import com.wildfire.common.WildfireGender;
 import com.wildfire.client.render.GenderRenderState;
+import com.wildfire.common.WildfireGender;
+import com.wildfire.fabric.client.mixins.accessors.SessionServiceAccessor;
 import java.util.Objects;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
@@ -51,11 +53,18 @@ public class FabricClientHelper implements ClientHelper {
         return state.getData(STATE);
     }
 
-    //? if <=26.2 {
-    /*@Override
-    public boolean validateSessionUrl(final com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService service, String expected) {
-        var accessor = (com.wildfire.fabric.client.mixins.accessors.YggdrasilMinecraftSessionServiceAccessor) service;
-        return Objects.equals(accessor.getBaseUrl(), expected);
+    @Override
+    public String getSessionUrl(final MinecraftServicesSessionService service) {
+        var accessor = (SessionServiceAccessor) service;
+        String baseUrl;
+        //? if <=26.2
+        //baseUrl = accessor.getBaseUrl();
+        //? if >=26.3-pre-2 {
+        baseUrl = accessor.getDiscoveryService().getUrl(com.mojang.authlib.services.response.discovery.Service.SESSION, "join");
+        if (baseUrl.endsWith("join")) {
+            baseUrl = baseUrl.substring(0, baseUrl.length() - 4);
+        }
+        //? }
+        return baseUrl;
     }
-    *///?}
 }
